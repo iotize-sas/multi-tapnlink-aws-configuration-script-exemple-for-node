@@ -19,7 +19,7 @@ const ACCES_KEY = ' your acces ';
 const SECRET_KEY = ' your secret key ';
 
 
-process.env['TAP_WEP_KEY'] = '*Iotize_38330_Iotize?';
+process.env['TAP_WEP_KEY'] = ' **';
 
 wifi.init({
     iface: null // network interface, choose a random wifi interface if set to null
