@@ -1,0 +1,26 @@
+{
+    "meta": {
+        "version": "1.0.0"
+    },
+    "config": {
+        "version": "1.0.0",
+        "tap": {
+        },
+        "data": {
+            "bundles": [
+                {
+                    "id": 0,
+                    "name": "test",
+                    "variables": [
+                        {
+                            "id": 0,
+                            "name": "test",
+                            "type": "UINT32",
+                            "kind": "IN_TAP_STATIC"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
