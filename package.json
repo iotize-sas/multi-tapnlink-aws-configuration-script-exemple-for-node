@@ -11,9 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@iotize/cli-core": "1.0.0-alpha.7",
-    "@iotize/common": "^1.0.0",
+    "@iotize/common": "^1.1.1",
     "@iotize/device-client.js": "^1.0.0-alpha.14",
-    "@iotize/device-com-mqtt.js": "1.0.0-alpha.9",
+    "@iotize/device-com-mqtt.js": "1.0.0-alpha.8",
     "@iotize/device-com-socket.node": "^1.0.0-alpha.8",
     "@iotize/device-com-websocket.js": "1.0.0-alpha.7",
     "@iotize/device-com-wifi.node": "^1.0.0-alpha.5",

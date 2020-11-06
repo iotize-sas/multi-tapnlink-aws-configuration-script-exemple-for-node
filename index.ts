@@ -1,38 +1,68 @@
 import '@iotize/tap-app-core.node/register/wifi';
 import '@iotize/tap-app-core.node/register/socket';
-import {scannerProvider} from '@iotize/tap-app-core.node';
+import {scannerProvider, TapProtocolFactory} from '@iotize/tap-app-core.node';
+import { tapProtocolFactory} from '@iotize/tap-app-core.node';
 import '@iotize/device-client.js/ext/configurator';
 
 import * as AwsCli from 'aws-cli-js';
 import { Tap } from "@iotize/device-client.js";
 import { readdirSync, readFileSync } from "fs";
 import { join } from 'path';
-import { wifi } from "@iotize/device-com-wifi.node";
+import { wifi, WifiComProtocol } from "@iotize/device-com-wifi.node";
 import { TapConfigSchema } from "@iotize/device-client.js/config/schema/v1";
 import { validateTapConfig } from '@iotize/device-client.js/configurator';
+import { SocketProtocol } from "@iotize/device-com-socket.node";
+import { ComProtocol } from "@iotize/device-client.js/protocol/api";
 
 
 const Options = AwsCli.Options;
 const Aws = AwsCli.Aws;
-
-const ACCES_KEY = ' your acces ';
-const SECRET_KEY = ' your secret key ';
-
-
-process.env['TAP_WEP_KEY'] = ' **';
-
-wifi.init({
-    iface: null // network interface, choose a random wifi interface if set to null
-});
-
+const ACCES_KEY = '';
+const SECRET_KEY = '';
 const options = new Options(
     ACCES_KEY,
     SECRET_KEY,
     /* sessionToken */ '',
     /* currentWorkingDirectory */ ''
 );
-
 const aws = new Aws(options);
+const TAP_WEB_KEY = '**';
+
+wifi.init({
+    iface: null // network interface, choose a random wifi interface if set to null
+});
+
+
+
+interface CertFile {
+    privateKey: string,
+    deviceCertificate: string,
+    broker: string
+}
+
+interface OptionsWifi {
+    socket: {
+        host: string;
+        port: number;
+    };
+    network?: {
+        SSID: string;
+        password?: string;
+        algorithm?: string;
+        hidden?: boolean;
+    };
+}
+
+interface Options {
+    port: number,
+    host: string,
+    clientId: string,
+    username: string,
+    password: string,
+    deviceCertificate: string,
+    privateKey: string,
+    broker: string
+}
 
 start();
 
@@ -59,11 +89,10 @@ function start() {
  * @param things
  */
 async function getListThingsWithConfigType({things}: { things: any }) {
-
     let listThingsWithGoodType = await (things.filter((file: { thingTypeName: string; }) => {
         return file.thingTypeName == 'TAP-LINK-CONFIG';
     }));
-    let listCert: any[] = [];
+    let listCert: CertFile[] = [];
     let brokerFile = await readFileSync('./ca-broker-root.txt').toString();
     let broReplceR = brokerFile.replace(
         /\r/g, '');
@@ -71,7 +100,7 @@ async function getListThingsWithConfigType({things}: { things: any }) {
         /\n/g, '');
     let brokerCa = broReplceN.slice(27, broReplceN.length-25)
     await (readdirSync('./devices').map( async element => {
-        let certFile = {
+        let certFile: CertFile = {
             privateKey: '',
             deviceCertificate: '',
             broker: brokerCa
@@ -92,9 +121,9 @@ async function getListThingsWithConfigType({things}: { things: any }) {
         }))
         listCert.push(certFile);
     }))
-
     await getTapList(listThingsWithGoodType, listCert);
 }
+
 
 /**
  * Scan all wifi device
@@ -103,20 +132,16 @@ async function getListThingsWithConfigType({things}: { things: any }) {
  * @param listThingsWithGoodType
  * @param listCert
  */
-async function getTapList(listThingsWithGoodType: any, listCert: any[]) {
+async function getTapList(listThingsWithGoodType: any, listCert: CertFile[]) {
     const scanTimeout = 5 * 1000;
     const items = await scannerProvider.list(scanTimeout).toPromise();
     let listTapWifi = await (items.filter((tap: { name: string; }) => {
        return tap.name.includes('TP-LINK');
     }));
+    console.log(listTapWifi);
     let count = 0;
     for (const tapFind of listTapWifi) {
-        let tapWifiConfig = {
-            ssid: tapFind.payload.ssid,
-            webKey: process.env['TAP_WEP_KEY'],
-            mode: tapFind.payload.mode
-        };
-        let options = {
+        let options: Options = {
             port: 8883,
             host: listThingsWithGoodType[count].attributes.host,
             clientId: listThingsWithGoodType[count].thingName,
@@ -126,7 +151,7 @@ async function getTapList(listThingsWithGoodType: any, listCert: any[]) {
             privateKey: listCert[count].privateKey,
             broker: listCert[count].broker
         };
-        await tapConnectAndConfig(tapFind, tapWifiConfig, options);
+        await wifiConnect(tapFind, options);
         count++;
     }
 }
@@ -141,37 +166,66 @@ async function getTapList(listThingsWithGoodType: any, listCert: any[]) {
  * @param tapWifiConfig
  * @param options
  */
-async function tapConnectAndConfig(tapFind: any, tapWifiConfig: any, options: any) {
-    await wifi.connect({ ssid: tapWifiConfig.ssid, password: 'ABCD1234' }, async () => {
-        console.log('Connected to wifi');
-        const protocol = tapFind.protocolFactory;
-        const tap = Tap.fromProtocol(protocol);
-        const config = readFileSync('./conf.tapconfig.json');
-        console.log('Get tap config schema');
-        const tapConfig: TapConfigSchema = JSON.parse(config.toString());
+async function wifiConnect(tapFind: any, options: Options) {
 
-        if (!tapConfig.config.tap){
-            tapConfig.config.tap = {}
-        }
-        tapConfig.config.tap.mqttRelay = {
-            clientId: options.clientId,
-            // deviceCertificate: options.deviceCertificate,
-            // privateKey = options.privateKey,
-            // caCertificate = options.broker;
-            netKey: "testnetkey",
-            password: "IoTize006100000021_0000000000",
-            topicPrefix: "",
-            url: "user.cloud.iotize.com",
-            username: ""
-        }
-        console.log('Validate tap config');
-        await validateTapConfig(tapConfig);
-        console.log(`Connecting tap...`);
-        await tap.login("admin", "admin");
-        console.log(`Configuring tap...`);
-        await tap.configurator.configure(tapConfig);
-        console.log('Configuration successful!');
-        console.log(`Rebooting tap...`);
-        (await tap.service.device.reboot()).successful();
+    console.log(tapFind.payload.ssid);
+    await wifi.connect({ ssid: tapFind.payload.ssid, password: 'ABCD1234' }, async (test:string) => {
+        console.log('Connected to wifi');
     });
+
+    await setTimeout(function waitConnect() {
+        tapConfigAndConnect(tapFind,options);
+    }, 3000);
+
+}
+
+
+async function tapConfigAndConnect(tapFind: any, options: Options) {
+    const optionsWifi:OptionsWifi = {
+        socket: {
+            host:'192.168.4.1',
+            port: 2000
+        },
+        network: {
+            SSID: tapFind.payload.ssid,
+            password: 'ABCD1234',
+            algorithm: '',
+            hidden: true
+        }
+    }
+    const protocol = new WifiComProtocol(optionsWifi, (op) => new SocketProtocol(
+        {
+            host: op.socket.host,
+            port: op.socket.port
+        }));
+    const tap = Tap.fromProtocol(protocol);
+    const config = readFileSync('./conf.tapconfig.json');
+    console.log('Get tap config schema');
+    const tapConfig: TapConfigSchema = JSON.parse(config.toString());
+
+    if (!tapConfig.config.tap) {
+        tapConfig.config.tap = {}
+    }
+    tapConfig.config.tap.mqttRelay = {
+        clientId: options.clientId,
+        // deviceCertificate: options.deviceCertificate,
+        // privateKey: options.privateKey,
+        // caCertificate: options.broker,
+        netKey: "testnetkey",
+        password: tapFind.name + '_0000000000',
+        topicPrefix: "",
+        url: "user.cloud.iotize.com",
+        username: tapFind.name
+    }
+    console.log('Validate tap config');
+    await validateTapConfig(tapConfig);
+    console.log(`Connect`);
+    await tap.connect();
+    console.log(`Connecting tap...`);
+    await tap.login("admin", "admin");
+    console.log(`Configuring tap...`);
+    await tap.configurator.configure(tapConfig);
+    console.log('Configuration successful!');
+    console.log(`Rebooting tap...`);
+    (await tap.service.device.reboot()).successful();
 }

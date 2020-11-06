@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="aa57086e-d790-4e89-889b-fd49ab43b4f4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/devices/device1/fakeCert.pem.cert" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/devices/device1/fakePrivate.pem.key" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/devices/device1/fakePublic.pem.key" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -16,14 +37,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1jVUVu7oQdiwd4SXMPpkjiQoAlj" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="Z:/bitbucket/tap-device-integration-tests.node/package.json" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="C:\Users\yoann.roche\Documents\multi-tapnlink-aws-configuration-script-exemple-for-node\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -53,11 +78,30 @@
       <workItem from="1604304221725" duration="5951000" />
       <workItem from="1604312281854" duration="931000" />
       <workItem from="1604314565665" duration="1671000" />
+      <workItem from="1604484618774" duration="7902000" />
+      <workItem from="1604568105944" duration="19321000" />
+      <workItem from="1604590268427" duration="1096000" />
+      <workItem from="1604649337522" duration="91000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="294" y="160" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603888997208">
@@ -68,29 +112,29 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="645" y="221" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1010@0.0.1680.1010" timestamp="1603987241123" />
-    <state x="620" y="260" width="568" height="490" key="FileChooserDialogImpl" timestamp="1604305776120">
+    <state x="620" y="260" width="568" height="490" key="FileChooserDialogImpl" timestamp="1604571476407">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="620" y="260" width="568" height="490" key="FileChooserDialogImpl/0.0.1680.1010@0.0.1680.1010" timestamp="1604305776120" />
-    <state width="1659" height="272" key="GridCell.Tab.0.bottom" timestamp="1603990402803">
+    <state x="620" y="260" width="568" height="490" key="FileChooserDialogImpl/0.0.1680.1010@0.0.1680.1010" timestamp="1604571476407" />
+    <state width="1659" height="272" key="GridCell.Tab.0.bottom" timestamp="1604571903614">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1659" height="272" key="GridCell.Tab.0.bottom/0.0.1680.1010@0.0.1680.1010" timestamp="1603990402803" />
-    <state width="1659" height="272" key="GridCell.Tab.0.center" timestamp="1603990402803">
+    <state width="1659" height="272" key="GridCell.Tab.0.bottom/0.0.1680.1010@0.0.1680.1010" timestamp="1604571903614" />
+    <state width="1659" height="272" key="GridCell.Tab.0.center" timestamp="1604571903614">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1659" height="272" key="GridCell.Tab.0.center/0.0.1680.1010@0.0.1680.1010" timestamp="1603990402803" />
-    <state width="1659" height="272" key="GridCell.Tab.0.left" timestamp="1603990402803">
+    <state width="1659" height="272" key="GridCell.Tab.0.center/0.0.1680.1010@0.0.1680.1010" timestamp="1604571903614" />
+    <state width="1659" height="272" key="GridCell.Tab.0.left" timestamp="1604571903614">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1659" height="272" key="GridCell.Tab.0.left/0.0.1680.1010@0.0.1680.1010" timestamp="1603990402803" />
-    <state width="1659" height="272" key="GridCell.Tab.0.right" timestamp="1603990402803">
+    <state width="1659" height="272" key="GridCell.Tab.0.left/0.0.1680.1010@0.0.1680.1010" timestamp="1604571903614" />
+    <state width="1659" height="272" key="GridCell.Tab.0.right" timestamp="1604571903614">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1659" height="272" key="GridCell.Tab.0.right/0.0.1680.1010@0.0.1680.1010" timestamp="1603990402803" />
-    <state x="496" y="233" key="run.anything.popup" timestamp="1603989882073">
+    <state width="1659" height="272" key="GridCell.Tab.0.right/0.0.1680.1010@0.0.1680.1010" timestamp="1604571903614" />
+    <state x="496" y="233" width="672" height="677" key="run.anything.popup" timestamp="1604578708114">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="496" y="233" key="run.anything.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1603989882073" />
+    <state x="496" y="233" width="672" height="677" key="run.anything.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1604578708114" />
   </component>
 </project>
